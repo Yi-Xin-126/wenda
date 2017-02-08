@@ -5,10 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 
 @Controller
@@ -44,5 +45,31 @@ public class IndexController {
         model.addAttribute("map",map);
         model.addAttribute("user",new User("LEE"));
         return "home";
+    }
+
+    @RequestMapping(path = {"/request"},method = {RequestMethod.GET})
+    @ResponseBody
+    public String request(Model model, HttpServletResponse response,
+                          HttpServletRequest request,
+                          HttpSession httpSession,
+                          @CookieValue("JSESSIONID") String sessionId) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("COOKIEVALUE: " + sessionId + "<br>");
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            sb.append(name + ":" + request.getHeader(name) + "<br>");
+        }
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                sb.append("Cookie:" + cookie.getName() + " Value:" + cookie.getValue());
+            }
+        }
+        sb.append(request.getMethod() + "<br>");
+        sb.append(request.getQueryString() + "<br>");
+        sb.append(request.getPathInfo() + "<br>");
+        sb.append(request.getRequestURI() + "<br>");
+        sb.append(request.getRequestURL() + "<br>");
+        return sb.toString();
     }
 }
