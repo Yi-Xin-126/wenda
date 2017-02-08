@@ -1,11 +1,24 @@
 <html>
 <body>
 <pre>
+    #*
+    你看不到我~~~~
+    *#
     $!{value1}<br>## !表示:如果不存在，强制为空
     $!{colors}
     #foreach($color in $colors)
-        This is color : $color
+        This is color $!{foreach.index}: $color $!{foreach.count}
     #end
+
+    #foreach($key in $map.keySet())
+        Number: $key ,Value: $map.get($key)
+    #end
+
+    #foreach($entry in $map.entrySet())
+        Number: $entry.key ,Value: $entry.value
+    #end
+
+    User: $!{user.name}
 
 </pre>
 </body>
