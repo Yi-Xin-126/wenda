@@ -1,9 +1,16 @@
 package com.example.controller;
 
 import com.example.model.User;
+import com.example.service.WendaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +22,16 @@ import java.util.*;
 @Controller
 public class IndexController {
 
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+
+    @Autowired
+    WendaService wendaService;
+
     @RequestMapping(path = {"/","/index"}, method = {RequestMethod.GET})
     @ResponseBody
-    public String index(){
-
-        return "welcome";
+    public String index(HttpSession httpSession){
+        logger.info("VISIT HOME");
+        return wendaService.getMessage(1) +" welcome " + httpSession.getAttribute("msg");
     }
 
     @RequestMapping(path = {"/profile/{groupId}/{userId}"})
@@ -70,6 +82,37 @@ public class IndexController {
         sb.append(request.getPathInfo() + "<br>");
         sb.append(request.getRequestURI() + "<br>");
         sb.append(request.getRequestURL() + "<br>");
+
+        response.addHeader("nowcoder","hello");
+        response.addCookie(new Cookie("username","nowcoder"));
+
+
         return sb.toString();
+    }
+
+    @RequestMapping(path = {"/redirect/{code}"},method = {RequestMethod.GET})
+    public RedirectView redirect(@PathVariable("code") int code,
+                                 HttpSession httpSession) {
+        httpSession.setAttribute("msg","jump from redirect");
+        RedirectView redirectView = new RedirectView("/",true);
+        if (code == 301) {
+            redirectView.setStatusCode(HttpStatus.MOVED_PERMANENTLY);
+        }
+        return redirectView;
+    }
+
+    @ExceptionHandler()
+    @ResponseBody
+    public String error(Exception e) {
+        return "error:" + e.getMessage();
+    }
+
+    @RequestMapping(path = {"/admin"},method = {RequestMethod.GET})
+    @ResponseBody
+    public String admin(@RequestParam("key") String key) {
+        if ("admin".equals(key)) {
+            return "Hello admin";
+        }
+        throw new IllegalArgumentException("参数不对");
     }
 }
