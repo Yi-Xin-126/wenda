@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Created by YiXin on 2017/2/9.
- *
  */
 @Controller
 public class SettingController {
