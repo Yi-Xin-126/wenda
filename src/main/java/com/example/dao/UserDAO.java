@@ -1,10 +1,8 @@
 package com.example.dao;
 
 import com.example.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
 
-import javax.jws.soap.SOAPBinding;
 
 /**
  * Created by YiXin on 2017/2/9.
@@ -18,4 +16,14 @@ public interface UserDAO {
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
             ") values(#{name},#{password},#{salt},#{headUrl})"})
     int addUser(User user);
+
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id = #{id}"})
+    User selectById(int id);
+
+    @Update({"update ", TABLE_NAME, " set password = #{password} where id = #{id}"})
+    void updatePassword(User user);
+
+    @Delete({"delete from ", TABLE_NAME, " where id = #{id}"})
+    void deleteById(int id);
+
 }

@@ -19,6 +19,19 @@ public class User {
         this.name = name;
     }
 
+
+    public String getDescription() {
+        return "This is " + name;
+    }
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
     public int getId() {
         return id;
     }
@@ -27,7 +40,27 @@ public class User {
         this.id = id;
     }
 
-    public String getDescription() {
-        return "This is " + name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }
