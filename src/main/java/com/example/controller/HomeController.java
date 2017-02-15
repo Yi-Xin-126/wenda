@@ -41,8 +41,8 @@ public class HomeController {
     @Autowired
     QuestionService questionService;
 
-    @RequestMapping(path = {"/","/index"}, method = {RequestMethod.GET})
-    public String index(Model model){
+    @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
+    public String index(Model model) {
 
 
         model.addAttribute("vos", getQuestions(0, 0, 10));
@@ -51,8 +51,8 @@ public class HomeController {
 
     @RequestMapping(path = {"/user/{userId}"}, method = {RequestMethod.GET})
     public String userIndex(Model model,
-                            @PathVariable("userId") int userId){
-        model.addAttribute("vos", getQuestions(userId, 0 ,10));
+                            @PathVariable("userId") int userId) {
+        model.addAttribute("vos", getQuestions(userId, 0, 10));
         return "index";
     }
 }
