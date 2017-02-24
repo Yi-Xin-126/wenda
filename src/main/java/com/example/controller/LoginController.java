@@ -1,11 +1,13 @@
 package com.example.controller;
 
 import com.example.service.UserService;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,7 @@ public class LoginController {
     public String reg(Model model,
                       @RequestParam("username") String username,
                       @RequestParam("password") String password,
+                      @RequestParam(value = "next", required = false) String next,
                       HttpServletResponse response){
         try{
             Map<String, String> map = userService.register(username, password);
@@ -35,6 +38,9 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if (StringUtils.isNotBlank(next)) {
+                    return "redirect:" + next;
+                }
                 return "redirect:/";
             } else {
                 model.addAttribute("msg", map.get("msg"));
@@ -51,6 +57,7 @@ public class LoginController {
     public String login(Model model,
                         @RequestParam("username") String username,
                         @RequestParam("password") String password,
+                        @RequestParam(value = "next", required = false) String next,
                         @RequestParam(value = "remeberme", defaultValue = "false") boolean remeberme,
                         HttpServletResponse response){
         try{
@@ -59,6 +66,9 @@ public class LoginController {
                 Cookie cookie = new Cookie("ticket", map.get("ticket"));
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if (StringUtils.isNotBlank(next)) {
+                    return "redirect:" + next;
+                }
                 return "redirect:/";
             } else {
                 model.addAttribute("msg", map.get("msg"));
@@ -72,7 +82,14 @@ public class LoginController {
     }
 
     @RequestMapping(path = {"/reglogin"}, method = {RequestMethod.GET})
-    public String login() {
+    public String login(Model model,@RequestParam(value = "next", required = false) String next) {
+        model.addAttribute("next", next);
         return "login";
+    }
+
+    @RequestMapping(path = {"/logout"}, method = {RequestMethod.GET})
+    public String logout(@CookieValue("ticket") String ticket) {
+        userService.logout(ticket);
+        return "redirect:/";
     }
 }

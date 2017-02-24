@@ -2,7 +2,7 @@ package com.example.interceptor;
 
 import com.example.dao.LoginTicketDAO;
 import com.example.dao.UserDAO;
-import com.example.model.HostHoler;
+import com.example.model.HostHolder;
 import com.example.model.LoginTicket;
 import com.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class PassportInterceptor implements HandlerInterceptor{
     UserDAO userDAO;
 
     @Autowired
-    HostHoler hostHoler;
+    HostHolder hostHolder;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -49,21 +49,21 @@ public class PassportInterceptor implements HandlerInterceptor{
             }
 
             User user = userDAO.selectById(loginTicket.getUserId());
-            hostHoler.setUser(user);
+            hostHolder.setUser(user);
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        if (modelAndView != null) {
-
+        if (modelAndView != null && hostHolder.getUser() != null) {
+            modelAndView.addObject(hostHolder.getUser());
         }
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        hostHoler.clear();
+        hostHolder.clear();
     }
 }
