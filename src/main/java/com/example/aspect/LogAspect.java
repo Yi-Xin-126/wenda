@@ -24,12 +24,15 @@ public class LogAspect {
     public void beforeMethod(JoinPoint joinPoint) {
         StringBuilder sb = new StringBuilder();
         for (Object arg : joinPoint.getArgs()) {
-            sb.append("arg:" + arg.toString() + " ");
+            if (arg != null) {
+                sb.append("arg:" + arg.toString() + "|");
+            }
         }
-        logger.info("before Method " + new Date() + sb.toString());
+        logger.info("before method:" + sb.toString());
+
     }
 
-    @After("execution(* com.example.controller.IndexController.*(..))")
+    @After("execution(* com.example.controller.*Controller.*(..))")
     public void afterMethod() {
         logger.info("after Method " + new Date());
     }
