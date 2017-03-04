@@ -38,7 +38,7 @@
                                         <meta itemprop="post-id" content="113477">
                                         <meta itemprop="post-url-token" content="19831487">
                                         <h2 class="feed-title">
-                                            <a target="_blank" class="post-link" href="http://zhuanlan.zhihu.com/p/198314">$!{vo.question.title}</a></h2>
+                                            <a target="_blank" class="post-link" href="/question/$!{vo.question.id}">$!{vo.question.title}</a></h2>
                                         <div class="entry-body post-body js-collapse-body">
                                             <div class="zm-item-vote">
                                                 <a class="zm-item-vote-count js-expand js-vote-count" href="#" data-bind-votecount="">1082</a></div>
@@ -181,4 +181,6 @@
             <div class="tooltip-arrow arrow"></div>
             <div class="tooltip-inner inner">如需转载，请通过私信或评论联系我</div></div>
     </div>
+#parse("js.html")
+<script type="text/javascript" src="/scripts/main/site/detail.js"></script>
 #parse("footer.html")
