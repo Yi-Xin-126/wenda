@@ -1,7 +1,7 @@
 package com.example.controller;
 
-import com.example.model.HostHolder;
-import com.example.model.Question;
+import com.example.model.*;
+import com.example.service.CommentService;
 import com.example.service.QuestionService;
 import com.example.service.UserService;
 import com.example.util.WendaUtil;
@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by YiXin on 2017/3/4.
@@ -29,6 +31,9 @@ public class QuestionController {
 
     @Autowired
     HostHolder hostHolder;
+
+    @Autowired
+    CommentService commentService;
 
     @RequestMapping(value = {"question/add"}, method = {RequestMethod.POST})
     @ResponseBody
@@ -60,7 +65,15 @@ public class QuestionController {
     public String questionDetail(Model model,@PathVariable("qid")int qid) {
         Question question = questionService.selectById(qid);
         model.addAttribute("question", question);
-        model.addAttribute("user", userService.getUser(question.getUserId()));
+        List<Comment> commentList = commentService.getCommentByEntity(qid, EntityType.ENTITY_QUESTION);
+        List<ViewObject> comments = new ArrayList<ViewObject>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+        model.addAttribute("comments", comments);
         return "detail";
     }
 }
