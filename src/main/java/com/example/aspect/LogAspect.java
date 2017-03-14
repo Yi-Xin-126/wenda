@@ -36,4 +36,5 @@ public class LogAspect {
     public void afterMethod() {
         logger.info("after Method " + new Date());
     }
+
 }
