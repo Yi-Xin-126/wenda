@@ -20,8 +20,8 @@ import java.util.Date;
  * Created by YiXin on 2017/3/6.
  */
 @Controller
-public class CommetnController {
-    private static final Logger logger = LoggerFactory.getLogger(CommetnController.class);
+public class CommentController {
+    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
     @Autowired
     HostHolder hostHolder;
 
