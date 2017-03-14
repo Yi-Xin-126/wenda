@@ -8,8 +8,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 import redis.clients.jedis.Tuple;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -340,6 +342,39 @@ public class JedisApater implements InitializingBean{
         } catch (Exception e) {
             logger.error("发生异常" + e.getMessage());
         } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public Jedis getJedis() {
+        return pool.getResource();
+    }
+
+    public Transaction multi(Jedis jedis) {
+        try {
+            return jedis.multi();
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Object> exec(Transaction tx, Jedis jedis) {
+        try {
+            return tx.exec();
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (tx != null) {
+                try {
+                    tx.close();
+                } catch (IOException ioe) {
+                    logger.error("发生异常" + ioe.getMessage());
+                }
+            }
             if (jedis != null) {
                 jedis.close();
             }
