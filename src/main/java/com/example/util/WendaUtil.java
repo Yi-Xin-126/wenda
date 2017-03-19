@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 /**
- * Created by nowcoder on 2016/7/3.
+ * Created by YiXin on 2017/2/19.
  */
 public class WendaUtil {
     private static final Logger logger = LoggerFactory.getLogger(WendaUtil.class);

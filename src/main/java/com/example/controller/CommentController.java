@@ -1,5 +1,8 @@
 package com.example.controller;
 
+import com.example.async.EventModel;
+import com.example.async.EventProducer;
+import com.example.async.EventType;
 import com.example.model.Comment;
 import com.example.model.EntityType;
 import com.example.model.HostHolder;
@@ -31,6 +34,9 @@ public class CommentController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     @RequestMapping(value = {"/addComment"}, method = {RequestMethod.POST})
     public String addComment(@RequestParam("questionId") int questionId,
                              @RequestParam("content") String content) {
@@ -48,6 +54,10 @@ public class CommentController {
             commentService.addComment(comment);
             int count = commentService.getCommetnCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(), count);
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActionId(comment.getUserId())
+                    .setEntityId(questionId));
+
         } catch (Exception e) {
             logger.error("增加评论失败" + e.getMessage());
         }
