@@ -60,6 +60,7 @@ public class MessageController {
             List<ViewObject> messages = new ArrayList<ViewObject>();
             for (Message message : messageList) {
                 ViewObject vo = new ViewObject();
+                messageService.updateReadStatus(message.getId());
                 vo.set("message", message);
                 vo.set("user", userService.getUser(message.getFromId()));
                 messages.add(vo);

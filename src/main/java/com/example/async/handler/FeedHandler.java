@@ -5,10 +5,9 @@ import com.example.async.EventHandler;
 import com.example.async.EventModel;
 import com.example.async.EventType;
 import com.example.model.*;
-import com.example.service.FeedService;
-import com.example.service.MessageService;
-import com.example.service.QuestionService;
-import com.example.service.UserService;
+import com.example.service.*;
+import com.example.util.JedisApater;
+import com.example.util.RedisKeyUtil;
 import com.example.util.WendaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +31,12 @@ public class FeedHandler implements EventHandler {
 
     @Autowired
     FeedService feedService;
+
+    @Autowired
+    FollowService followService;
+
+    @Autowired
+    JedisApater jedisApater;
 
     private String buildFeedData(EventModel model) {
         Map<String, String> map = new HashMap<String, String>();
@@ -68,6 +73,14 @@ public class FeedHandler implements EventHandler {
             return;
         }
         feedService.addFeed(feed);
+
+        //给事件的粉丝推
+        List<Integer> followers = followService.getFollowers(EntityType.ENTITY_USER, model.getActionId(), Integer.MAX_VALUE);
+        followers.add(0);
+        for (int follower : followers) {
+            String timeLine = RedisKeyUtil.getTimelineKey(follower);
+            jedisApater.lpush(timeLine, String.valueOf(feed.getId()));
+        }
     }
 
     @Override
