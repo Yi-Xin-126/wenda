@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -34,7 +35,7 @@ public class LogAspect {
 
     @After("execution(* com.example.controller.*Controller.*(..))")
     public void afterMethod() {
-        logger.info("after Method " + new Date());
+        logger.info("after Method " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 
 }
