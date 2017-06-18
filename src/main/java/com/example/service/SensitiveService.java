@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -102,11 +101,11 @@ public class SensitiveService implements InitializingBean {
         }
 
         String replacement = "***";
-        TrieNode tempNode = rootNode;
-        int begin = 0;
-        int position = 0;
+        TrieNode tempNode = rootNode; //blue point
+        int begin = 0;                //red point
+        int position = 0;             //black point
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder();  //result string
 
         while (position < text.length()) {
             char c = text.charAt(position);
