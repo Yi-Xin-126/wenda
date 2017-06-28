@@ -221,12 +221,12 @@ public class MultiThreadTests {
         }
     }
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        testThread();
 //        testSynchronized();
 //        testBlockingQueue();
 //        testExecutor();
 //        testWithoutAtomic();
-        testWithAtomic();
-    }
+//        testWithAtomic();
+//    }
 }
