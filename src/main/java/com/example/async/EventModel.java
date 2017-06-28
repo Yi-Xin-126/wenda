@@ -14,10 +14,10 @@ public class EventModel {
     private int entityOwnderId;
     private Map<String, String> exts = new HashMap<String, String>();
 
+
     public EventModel() {
 
     }
-
 
 
     public EventModel setExt(String key, String value) {

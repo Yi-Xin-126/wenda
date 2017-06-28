@@ -38,7 +38,7 @@ public class UserService {
             map.put("msg","用户名已经被注册");
             return map;
         }
-        user =new User();
+        user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0,5));
         user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png",
