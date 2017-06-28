@@ -30,7 +30,7 @@ public class InitDatabaseTests {
 //	@Autowired
 //	FollowService followService;
 //
-//	@Test
+//	@Testo
 //	public void initDatabase() {
 //		Random random = new Random();
 //		for (int i = 0; i < 11; i++) {

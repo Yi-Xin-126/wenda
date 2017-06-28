@@ -12,13 +12,13 @@ public class EventModel {
     private int entityType;
     private int entityId;
     private int entityOwnderId;
-
-
     private Map<String, String> exts = new HashMap<String, String>();
+
 
     public EventModel() {
 
     }
+
 
     public EventModel setExt(String key, String value) {
         exts.put(key, value);
